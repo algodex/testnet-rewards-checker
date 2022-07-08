@@ -2,12 +2,16 @@ import * as React from 'react'
 import Container from '@mui/material/Container'
 // import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
 import Head from 'next/head'
 import Link from '@/components/Nav/Link'
 import {useTranslation} from 'next-i18next'
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {defaults} from '../next-i18next.config'
 import Box from '@mui/material/Box'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import debounce from 'lodash.debounce'
+
 export async function getServerSideProps({ locale }) {
   return {
     props: {
@@ -20,6 +24,28 @@ export async function getServerSideProps({ locale }) {
 }
 export default function Home() {
   const { t } = useTranslation('index')
+  const [wallet, setWallet] = useState('XDASDSA')
+  const [eligibility, setEligibility] = useState('not eligible')
+  const walletField = useRef(null)
+
+  const handleWalletChange = () => {
+    const val = walletField.current.value
+    console.log(val)
+    setWallet(val)
+  }
+
+  useEffect(() => {
+    if (wallet.length == 4) {
+      setEligibility(true)
+    } else {
+      setEligibility(false)
+    }
+  }, [wallet])
+
+  const debouncedEventHandler = useMemo(
+    () => debounce(handleWalletChange, 100)
+    ,[])
+
   return (
     <>
       <Head>
@@ -29,15 +55,20 @@ export default function Home() {
       </Head>
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
+          {/*<Typography variant="h4" component="h1" gutterBottom>
             {t('heading')}
-          </Typography>
-          <Link href="/favorites" color="secondary">
-            {t('favorites-page-link')}
-          </Link>
+  </Typography> */}
           <Typography variant="body1">
             {t('body')}
           </Typography>
+          <TextField id="standard-basic" label="Wallet Address" inputRef={walletField}
+            variant="standard" onChange={debouncedEventHandler} />
+          <Box sx={{ my: 4 }}>
+            <Typography variant="body1">
+              Your wallet {wallet} is { eligibility ? 'eligible' : 'ineligible' } for rewards.
+              
+            </Typography>
+          </Box>
         </Box>
       </Container>
     </>

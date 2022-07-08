@@ -55,25 +55,9 @@ function Drawer({width, offset, ...props}){
             </ListSubheader>
           }>
           <ListItemLink to="/" icon={<HomeIcon/>} primary={common('home')}/>
-          <ListItemLink to="/favorites" icon={<FavoriteIcon/>} primary={common('favorites')}/>
         </List>
         <Divider />
-        <List
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              {t('subtitle')}
-            </ListSubheader>
-          }
-        >
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+
       </Box>
     </MUIDrawer>
   )
