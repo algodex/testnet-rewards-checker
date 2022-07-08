@@ -41,9 +41,9 @@ export default function Home() {
     console.debug({rewards});
     const months = rewards.months?.join(', ')
     const days = rewards.days?.join(', ')
-    const trades = rewards.walletToTradeData[wallet]
-    const orders = rewards.walletToOrderCount[wallet]
-    const {tierA, tierB, tierBPlus} = rewards;
+    const trades = rewards.walletToTradeData[wallet] || 0
+    const orders = rewards.walletToOrderCount[wallet] || 0
+    const {tierA, tierB, tierBPlus} = rewards
     const calcRewards = ( {tierA, tierB, tierBPlus}) => {
       if (tierA) {
         return 12000
