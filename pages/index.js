@@ -25,25 +25,59 @@ export async function getServerSideProps({ locale }) {
 }
 export default function Home() {
   const { t } = useTranslation('index')
-  const [rewards, setRewards] = useState('XDASDSA')
-  const [eligibility, setEligibility] = useState('not eligible')
+  const [rewards, setRewards] = useState('')
+  const [hasError, setError] = useState(false)
   const walletField = useRef(null)
-
+  const walletRegEx = /[A-Z2-7]{58}/
   const handleWalletChange = async () => {
-    console.log('here')
-    const val = walletField.current.value
-    const rewards = await calculateRewards(val)
-    console.log({rewards});
-    setRewards(JSON.stringify(rewards))
-  }
-
-  useEffect(() => {
-    if (rewards.length == 4) {
-      setEligibility(true)
+    const wallet = walletField.current.value
+    if (!wallet.match(walletRegEx)) {
+      setError(true)
+      return
     } else {
-      setEligibility(false)
+      setError(false)
     }
-  }, [rewards])
+    const rewards = await calculateRewards(wallet)
+    console.log({rewards});
+    const months = rewards.months?.join(', ')
+    const days = rewards.days?.join(', ')
+    const trades = rewards.walletToTradeData[wallet]
+    const orders = rewards.walletToOrderCount[wallet]
+    const {tierA, tierB, tierBPlus} = rewards;
+    const calcRewards = ( {tierA, tierB, tierBPlus}) => {
+      if (tierA) {
+        return 12000
+      }
+      if (tierBPlus) {
+        return 8500
+      }
+      if (tierB) {
+        return 3000
+      }
+      return 0
+    } 
+    const rewardsAmount = calcRewards({tierA, tierB, tierBPlus});
+    if (!trades && !orders) {
+      setRewards(`${wallet} not found in system!`);
+    } else {
+      setRewards(
+        `
+        Rewards Results for ${wallet}:
+
+          Months: ${months}
+          Days: ${'\u00A0'} ${days}
+          Trades: ${trades}
+          Orders: ${orders}
+
+          Tier A ${'\u00A0'}Eligible: ${tierA}
+          Tier B+ Eligible: ${tierBPlus}
+          Tier B ${'\u00A0'}Eligible: ${tierB}
+
+          Rewards (ALGX): ${rewardsAmount}
+        `
+      )
+    }
+  }
 
   const debouncedEventHandler = useMemo(
     () => debounce(handleWalletChange, 100)
@@ -65,11 +99,12 @@ export default function Home() {
             {t('body')}
           </Typography>
           <TextField id="standard-basic" label="Wallet Address" inputRef={walletField}
-            variant="standard" onChange={debouncedEventHandler} />
-          <Box sx={{ my: 4 }}>
-            <Typography variant="body1">
-              Your wallet {rewards} is { eligibility ? 'eligible' : 'ineligible' } for rewards.
-              
+            variant="standard" onChange={debouncedEventHandler} sx={{width: 400}}
+            error={hasError} />
+          <Box sx={{ my: 1 }}>
+            <Typography variant="body1" sx={{ whiteSpace: 'pre-line', 
+              fontFamily: 'monospace'}}>
+              {rewards}
             </Typography>
           </Box>
         </Box>
