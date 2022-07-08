@@ -12,6 +12,7 @@ const rewrites = () => {
 }
 
 const nextConfig = {
+  eslint: {ignoreDuringBuilds: true},
   reactStrictMode: true,
   i18n,
   pwa: {
