@@ -33,6 +33,7 @@ export default function Home() {
     console.log('here')
     const val = walletField.current.value
     const rewards = await calculateRewards(val)
+    console.log({rewards});
     setRewards(JSON.stringify(rewards))
   }
 

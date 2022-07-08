@@ -54,13 +54,33 @@ const isEligibleForTierA = (entry) => {
   return orderCount >= 5 && tradeCount >=10
     && monthCount >= 2 && dateCount >= 5
 }
+
+
+const isEligibleForTierB = (entry) => {
+  const tradeCount = entry.tradeCount || 0
+  const orderCount = entry.orderCount || 0
+  const dateCount = entry.dateCount || 0
+  return orderCount >= 5 && tradeCount >=10 && dateCount >= 2
+
+}
+
+
+const isEligibleForTierBPlus = (entry) => {
+  const tradeCount = entry.tradeCount || 0
+  const orderCount = entry.orderCount || 0
+  const dateCount = entry.dateCount || 0
+  return (orderCount + tradeCount >=20) && dateCount >= 10
+}
+
+
+
 const calculateRewards = async (wallet) => {
   const formattedEscrowDB = getDatabase('formatted_escrow')
   const formattedHistoryDB = getDatabase('formatted_history')
 
   const accountData =
   await formattedEscrowDB.query('formatted_escrow/distinctDates',
-    {reduce: false, keys: [wallet]} )
+    {reduce: false, keys: [wallet+':date', wallet+':month']} )
 
   const tradeData =
     await formattedHistoryDB.query('formatted_history/activityView',
@@ -96,7 +116,16 @@ const calculateRewards = async (wallet) => {
   setData(walletToTradeData, walletToInfo, 'tradeCount')
   setData(walletToOrderCount, walletToInfo, 'orderCount')
 
-  return { walletToMonths, walletToDates, walletToTradeData, walletToOrderCount }
+  const entry = walletToInfo[wallet] || {'monthCount':0, 'tradeCount':0,
+    'dateCount':0, 'orderCount':0
+  }
+  const tierA = isEligibleForTierA(entry)
+  const tierBPlus = isEligibleForTierBPlus(entry) && !tierA
+  const tierB = isEligibleForTierB(entry) && !tierBPlus && !tierA
+  const months = Array.from(walletToMonths[wallet] || new Set())
+  const days = Array.from(walletToDates[wallet] || new Set())
+  return { months, days, walletToTradeData, walletToOrderCount,
+    tierA, tierB, tierBPlus }
 }
 
 export default calculateRewards
