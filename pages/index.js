@@ -25,7 +25,7 @@ export async function getServerSideProps({ locale }) {
 }
 export default function Home() {
   const { t } = useTranslation('index')
-  const [wallet, setWallet] = useState('XDASDSA')
+  const [rewards, setRewards] = useState('XDASDSA')
   const [eligibility, setEligibility] = useState('not eligible')
   const walletField = useRef(null)
 
@@ -33,16 +33,16 @@ export default function Home() {
     console.log('here')
     const val = walletField.current.value
     const rewards = await calculateRewards(val)
-    setWallet(rewards)
+    setRewards(JSON.stringify(rewards))
   }
 
   useEffect(() => {
-    if (wallet.length == 4) {
+    if (rewards.length == 4) {
       setEligibility(true)
     } else {
       setEligibility(false)
     }
-  }, [wallet])
+  }, [rewards])
 
   const debouncedEventHandler = useMemo(
     () => debounce(handleWalletChange, 100)
@@ -67,7 +67,7 @@ export default function Home() {
             variant="standard" onChange={debouncedEventHandler} />
           <Box sx={{ my: 4 }}>
             <Typography variant="body1">
-              Your wallet {wallet} is { eligibility ? 'eligible' : 'ineligible' } for rewards.
+              Your wallet {rewards} is { eligibility ? 'eligible' : 'ineligible' } for rewards.
               
             </Typography>
           </Box>
