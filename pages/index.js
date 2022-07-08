@@ -11,6 +11,7 @@ import {defaults} from '../next-i18next.config'
 import Box from '@mui/material/Box'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import debounce from 'lodash.debounce'
+import calculateRewards from './calculate-wallet-rewards'
 
 export async function getServerSideProps({ locale }) {
   return {
@@ -28,10 +29,11 @@ export default function Home() {
   const [eligibility, setEligibility] = useState('not eligible')
   const walletField = useRef(null)
 
-  const handleWalletChange = () => {
+  const handleWalletChange = async () => {
+    console.log('here')
     const val = walletField.current.value
-    console.log(val)
-    setWallet(val)
+    const rewards = await calculateRewards(val)
+    setWallet(rewards)
   }
 
   useEffect(() => {
