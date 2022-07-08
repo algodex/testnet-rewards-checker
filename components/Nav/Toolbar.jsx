@@ -39,7 +39,7 @@ function Toolbar({title, height, isMobile, onClick, ...rest}) {
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
         {title || t('title')}
       </Typography>
-      <LocaleNavMenu isMobile={isMobile} onClick={onClick}/>
+    {/*  <LocaleNavMenu isMobile={isMobile} onClick={onClick}/> */}
     </MUIToolbar>
   )
 }

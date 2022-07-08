@@ -42,12 +42,12 @@ function BottomNavigation({onChange, ...rest}) {
         label={common('home')}
         icon={<HomeIcon />}
       />
-      <BottomNavigationAction
+     {/* <BottomNavigationAction
         to="/favorites"
         value="/favorites"
         label={common('favorites')}
         icon={<FavoriteIcon />}
-      />
+  /> */}
     </MUIBottomNavigation>
   )
 }

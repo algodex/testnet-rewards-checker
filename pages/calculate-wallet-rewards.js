@@ -75,8 +75,8 @@ const isEligibleForTierBPlus = (entry) => {
 
 
 const calculateRewards = async (wallet) => {
-  const formattedEscrowDB = getDatabase('formatted_escrow')
-  const formattedHistoryDB = getDatabase('formatted_history')
+  const formattedEscrowDB = getDatabase('testnet_formatted_escrow')
+  const formattedHistoryDB = getDatabase('testnet_formatted_history')
 
   const accountData =
   await formattedEscrowDB.query('formatted_escrow/distinctDates',

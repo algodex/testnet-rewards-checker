@@ -62,7 +62,7 @@ export default function Home() {
     } else {
       setRewards(
         `
-        Rewards Results for ${wallet}:
+        Testnet Rewards Results:
 
           Months: ${months}
           Days: ${'\u00A0'} ${days}
