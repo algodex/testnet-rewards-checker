@@ -35,11 +35,14 @@ const setData = (walletMap, walletToInfo, key) => {
 }
 
 const getDatabase = (name) => {
-  const baseUrl = 'http://localhost:3000/pouch'
+  const hostname = window.location.hostname
+  const protocol = window.location.protocol
+  const port = window.location.port
+  const baseUrl = protocol + '//' + hostname +':' + port + '/pouch'
   const options = {
     auth: {
-      username: 'admin',
-      password: 'dex',
+      username: 'dbreader',
+      password: 'plaintext_password',
     }
   }
   const db = new PouchDB(`${baseUrl}/${name}`, options)

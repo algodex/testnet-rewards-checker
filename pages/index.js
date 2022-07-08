@@ -38,7 +38,7 @@ export default function Home() {
       setError(false)
     }
     const rewards = await calculateRewards(wallet)
-    console.log({rewards});
+    console.debug({rewards});
     const months = rewards.months?.join(', ')
     const days = rewards.days?.join(', ')
     const trades = rewards.walletToTradeData[wallet]
@@ -66,15 +66,17 @@ export default function Home() {
 
           Months: ${months}
           Days: ${'\u00A0'} ${days}
-          Trades: ${trades}
-          Orders: ${orders}
+          Taker Trades: ${trades}
+          Maker Orders: ${orders}
 
           Tier A ${'\u00A0'}Eligible: ${tierA}
           Tier B+ Eligible: ${tierBPlus}
           Tier B ${'\u00A0'}Eligible: ${tierB}
 
           Rewards (ALGX): ${rewardsAmount}
-        `
+
+          This is not counting Testnet liquidity rewards which will be distributed via the rewards app.
+          `
       )
     }
   }
