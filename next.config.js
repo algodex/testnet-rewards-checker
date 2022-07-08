@@ -6,7 +6,7 @@ const rewrites = () => {
   return [
     {
       source: '/pouch/:db*',
-      destination: `${process.env.NEXT_PUBLIC_DB_BASE_URL}/:db*`,
+      destination: `${process.env.DB_BASE_URL}/:db*`,
     },
   ]
 }
