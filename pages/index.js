@@ -104,6 +104,7 @@ export default function Home() {
             variant="standard" onChange={debouncedEventHandler} sx={{width: 400}}
             error={hasError} />
           <Box sx={{ my: 1 }}>
+            ** DATABASE MAINTENANCE ONGOING **
             <Typography variant="body1" sx={{ whiteSpace: 'pre-line', 
               fontFamily: 'monospace'}}>
               {rewards}
