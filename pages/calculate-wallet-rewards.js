@@ -81,9 +81,15 @@ const calculateRewards = async (wallet) => {
   const formattedEscrowDB = getDatabase('testnet_formatted_escrow')
   const formattedHistoryDB = getDatabase('testnet_formatted_history')
 
-  const accountData =
+  const escrowDates =
   await formattedEscrowDB.query('formatted_escrow/distinctDates',
     {reduce: false, keys: [wallet+':date', wallet+':month']} )
+
+  const historyDates =
+  await formattedHistoryDB.query('formatted_history/distinctDates',
+    {reduce: false, keys: [wallet+':date', wallet+':month']} )
+
+  const accountData = {rows: [...escrowDates.rows, ...historyDates.rows]};
 
   const tradeData =
     await formattedHistoryDB.query('formatted_history/activityView',
