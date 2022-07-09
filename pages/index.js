@@ -46,7 +46,7 @@ export default function Home() {
     const {tierA, tierB, tierBPlus} = rewards
     const calcRewards = ( {tierA, tierB, tierBPlus}) => {
       if (tierA) {
-        return 12000
+        return 15710.57
       }
       if (tierBPlus) {
         return 8500
