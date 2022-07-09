@@ -75,7 +75,6 @@ export default function Home() {
 
           Rewards (ALGX): ${rewardsAmount}
 
-          This is not counting Testnet liquidity rewards which will be distributed via the rewards app.
           `
       )
     }
