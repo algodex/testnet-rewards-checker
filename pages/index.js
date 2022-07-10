@@ -38,7 +38,7 @@ export default function Home() {
       setError(false)
     }
     const rewards = await calculateRewards(wallet)
-    console.debug({rewards});
+    console.debug({rewards})
     const months = rewards.months?.join(', ')
     const days = rewards.days?.join(', ')
     const trades = rewards.walletToTradeData[wallet] || 0
@@ -56,9 +56,9 @@ export default function Home() {
       }
       return 0
     } 
-    const rewardsAmount = calcRewards({tierA, tierB, tierBPlus});
+    const rewardsAmount = calcRewards({tierA, tierB, tierBPlus})
     if (!trades && !orders) {
-      setRewards(`${wallet} not found in system!`);
+      setRewards(`${wallet} not found in system!`)
     } else {
       setRewards(
         `

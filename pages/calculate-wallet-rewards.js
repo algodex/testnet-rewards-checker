@@ -89,7 +89,7 @@ const calculateRewards = async (wallet) => {
   await formattedHistoryDB.query('formatted_history/distinctDates',
     {reduce: false, keys: [wallet+':date', wallet+':month']} )
 
-  const accountData = {rows: [...escrowDates.rows, ...historyDates.rows]};
+  const accountData = {rows: [...escrowDates.rows, ...historyDates.rows]}
 
   const tradeData =
     await formattedHistoryDB.query('formatted_history/activityView',
